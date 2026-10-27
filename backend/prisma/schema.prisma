@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model Usuario {
+  id        Int      @id @default(autoincrement())
+  nome      String   @db.VarChar(150)
+  email     String   @unique @db.VarChar(191)
+  senhaHash String   @map("senha_hash")
+  criadoEm  DateTime @default(now()) @map("criado_em")
+
+  eventos Evento[]
+
+  @@map("usuarios")
+}
+
+model Evento {
+  id          Int       @id @default(autoincrement())
+  nome        String    @db.VarChar(150)
+  descricao   String?   @db.Text
+  dataEvento  DateTime? @map("data_evento")
+  usuarioId   Int       @map("usuario_id")
+  criadoEm    DateTime  @default(now()) @map("criado_em")
+
+  usuario       Usuario       @relation(fields: [usuarioId], references: [id])
+  participantes Participante[]
+
+  @@map("eventos")
+}
+
+model Participante {
+  id        Int      @id @default(autoincrement())
+  nome      String   @db.VarChar(150)
+  email     String?  @db.VarChar(191)
+  telefone  String?  @db.VarChar(30)
+  ativo     Boolean  @default(true)
+  eventoId  Int      @map("evento_id")
+  criadoEm  DateTime @default(now()) @map("criado_em")
+
+  evento Evento @relation(fields: [eventoId], references: [id])
+
+  @@map("participantes")
+}
+model Restricao {
+  id             Int      @id @default(autoincrement())
+  eventoId       Int      @map("evento_id")
+  participanteId Int      @map("participante_id")
+  destinatarioId Int      @map("destinatario_id")
+  tipo           TipoRestricao
+  criadoEm       DateTime @default(now()) @map("criado_em")
+
+  @@unique([eventoId, participanteId, destinatarioId, tipo])
+  @@map("restricoes")
+}
+
+enum TipoRestricao {
+  PERMITIDO
+  PROIBIDO
+}

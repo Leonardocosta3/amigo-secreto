@@ -1,31 +1,25 @@
 import { Router } from "express";
 import { prisma } from "../lib/prisma.js";
 
+import {
+  autenticar,
+  type RequisicaoAutenticada
+} from "../middlewares/autenticacao.js";
+
+import { podeAdministrarEvento } from "../middlewares/permissaoEvento.js";
+
 const router = Router();
 
-// CADASTRAR EVENTO
-router.post("/", async (req, res) => {
+router.use(autenticar);
+
+// CRIAR EVENTO
+router.post("/", async (req: RequisicaoAutenticada, res) => {
   try {
-    const { nome, descricao, dataEvento, usuarioId } = req.body;
+    const { nome, descricao, dataEvento } = req.body ?? {};
 
-    if (
-      typeof nome !== "string" ||
-      !nome.trim() ||
-      !Number.isInteger(usuarioId) ||
-      usuarioId <= 0
-    ) {
+    if (typeof nome !== "string" || !nome.trim()) {
       return res.status(400).json({
-        erro: "Nome do evento e usuarioId válido são obrigatórios."
-      });
-    }
-
-    const usuario = await prisma.usuario.findUnique({
-      where: { id: usuarioId }
-    });
-
-    if (!usuario) {
-      return res.status(404).json({
-        erro: "Organizador não encontrado."
+        erro: "Informe o nome do evento."
       });
     }
 
@@ -33,52 +27,41 @@ router.post("/", async (req, res) => {
 
     if (data && Number.isNaN(data.getTime())) {
       return res.status(400).json({
-        erro: "Data do evento inválida."
+        erro: "Data inválida."
       });
     }
 
     const evento = await prisma.evento.create({
       data: {
         nome: nome.trim(),
-        descricao: descricao || null,
+        descricao: typeof descricao === "string" ? descricao : null,
         dataEvento: data,
-        usuarioId
+        usuarioId: req.usuarioId!
       }
     });
 
-    return res.status(201).json({
-      mensagem: "Evento cadastrado com sucesso!",
-      evento
-    });
+    return res.status(201).json(evento);
 
   } catch (error) {
     console.error(error);
 
     return res.status(500).json({
-      erro: "Erro ao cadastrar evento."
+      erro: "Erro ao criar evento."
     });
   }
 });
 
-// LISTAR EVENTOS DE UM ORGANIZADOR
-router.get("/", async (req, res) => {
+// LISTAR EVENTOS DO ORGANIZADOR
+router.get("/", async (req: RequisicaoAutenticada, res) => {
   try {
-    const usuarioId = Number(req.query.usuarioId);
-
-    if (!Number.isInteger(usuarioId) || usuarioId <= 0) {
-      return res.status(400).json({
-        erro: "Informe um usuarioId válido."
-      });
-    }
-
     const eventos = await prisma.evento.findMany({
-      where: { usuarioId },
+      where: { usuarioId: req.usuarioId! },
+      orderBy: { criadoEm: "desc" },
       include: {
         _count: {
           select: { participantes: true }
         }
-      },
-      orderBy: { criadoEm: "desc" }
+      }
     });
 
     return res.json(eventos);
@@ -92,14 +75,18 @@ router.get("/", async (req, res) => {
   }
 });
 
-// CONSULTAR UM EVENTO
-router.get("/:id", async (req, res) => {
+// CONSULTAR EVENTO
+router.get("/:id", async (req: RequisicaoAutenticada, res) => {
   try {
     const id = Number(req.params.id);
 
-    if (!Number.isInteger(id) || id <= 0) {
-      return res.status(400).json({
-        erro: "ID inválido."
+    if (!Number.isSafeInteger(id) || id <= 0) {
+      return res.status(400).json({ erro: "ID inválido." });
+    }
+
+    if (!(await podeAdministrarEvento(req.usuarioId!, id))) {
+      return res.status(404).json({
+        erro: "Evento não encontrado."
       });
     }
 
@@ -107,12 +94,6 @@ router.get("/:id", async (req, res) => {
       where: { id },
       include: { participantes: true }
     });
-
-    if (!evento) {
-      return res.status(404).json({
-        erro: "Evento não encontrado."
-      });
-    }
 
     return res.json(evento);
 

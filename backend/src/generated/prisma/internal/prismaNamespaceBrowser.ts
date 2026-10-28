@@ -54,7 +54,8 @@ export const ModelName = {
   Usuario: 'Usuario',
   Evento: 'Evento',
   Participante: 'Participante',
-  Restricao: 'Restricao'
+  Restricao: 'Restricao',
+  ResultadoSorteio: 'ResultadoSorteio'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -90,7 +91,8 @@ export const EventoScalarFieldEnum = {
   descricao: 'descricao',
   dataEvento: 'dataEvento',
   usuarioId: 'usuarioId',
-  criadoEm: 'criadoEm'
+  criadoEm: 'criadoEm',
+  sorteioRealizadoEm: 'sorteioRealizadoEm'
 } as const
 
 export type EventoScalarFieldEnum = (typeof EventoScalarFieldEnum)[keyof typeof EventoScalarFieldEnum]
@@ -119,6 +121,18 @@ export const RestricaoScalarFieldEnum = {
 } as const
 
 export type RestricaoScalarFieldEnum = (typeof RestricaoScalarFieldEnum)[keyof typeof RestricaoScalarFieldEnum]
+
+
+export const ResultadoSorteioScalarFieldEnum = {
+  id: 'id',
+  eventoId: 'eventoId',
+  participanteId: 'participanteId',
+  sorteadoId: 'sorteadoId',
+  tokenHash: 'tokenHash',
+  criadoEm: 'criadoEm'
+} as const
+
+export type ResultadoSorteioScalarFieldEnum = (typeof ResultadoSorteioScalarFieldEnum)[keyof typeof ResultadoSorteioScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -161,4 +175,11 @@ export const ParticipanteOrderByRelevanceFieldEnum = {
 } as const
 
 export type ParticipanteOrderByRelevanceFieldEnum = (typeof ParticipanteOrderByRelevanceFieldEnum)[keyof typeof ParticipanteOrderByRelevanceFieldEnum]
+
+
+export const ResultadoSorteioOrderByRelevanceFieldEnum = {
+  tokenHash: 'tokenHash'
+} as const
+
+export type ResultadoSorteioOrderByRelevanceFieldEnum = (typeof ResultadoSorteioOrderByRelevanceFieldEnum)[keyof typeof ResultadoSorteioOrderByRelevanceFieldEnum]
 

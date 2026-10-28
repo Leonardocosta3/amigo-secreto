@@ -400,7 +400,8 @@ export const ModelName = {
   Usuario: 'Usuario',
   Evento: 'Evento',
   Participante: 'Participante',
-  Restricao: 'Restricao'
+  Restricao: 'Restricao',
+  ResultadoSorteio: 'ResultadoSorteio'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -416,7 +417,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "usuario" | "evento" | "participante" | "restricao"
+    modelProps: "usuario" | "evento" | "participante" | "restricao" | "resultadoSorteio"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -684,6 +685,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ResultadoSorteio: {
+      payload: Prisma.$ResultadoSorteioPayload<ExtArgs>
+      fields: Prisma.ResultadoSorteioFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ResultadoSorteioFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResultadoSorteioPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ResultadoSorteioFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResultadoSorteioPayload>
+        }
+        findFirst: {
+          args: Prisma.ResultadoSorteioFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResultadoSorteioPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ResultadoSorteioFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResultadoSorteioPayload>
+        }
+        findMany: {
+          args: Prisma.ResultadoSorteioFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResultadoSorteioPayload>[]
+        }
+        create: {
+          args: Prisma.ResultadoSorteioCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResultadoSorteioPayload>
+        }
+        createMany: {
+          args: Prisma.ResultadoSorteioCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.ResultadoSorteioDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResultadoSorteioPayload>
+        }
+        update: {
+          args: Prisma.ResultadoSorteioUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResultadoSorteioPayload>
+        }
+        deleteMany: {
+          args: Prisma.ResultadoSorteioDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ResultadoSorteioUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.ResultadoSorteioUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ResultadoSorteioPayload>
+        }
+        aggregate: {
+          args: Prisma.ResultadoSorteioAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateResultadoSorteio>
+        }
+        groupBy: {
+          args: Prisma.ResultadoSorteioGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ResultadoSorteioGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ResultadoSorteioCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ResultadoSorteioCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -740,7 +807,8 @@ export const EventoScalarFieldEnum = {
   descricao: 'descricao',
   dataEvento: 'dataEvento',
   usuarioId: 'usuarioId',
-  criadoEm: 'criadoEm'
+  criadoEm: 'criadoEm',
+  sorteioRealizadoEm: 'sorteioRealizadoEm'
 } as const
 
 export type EventoScalarFieldEnum = (typeof EventoScalarFieldEnum)[keyof typeof EventoScalarFieldEnum]
@@ -769,6 +837,18 @@ export const RestricaoScalarFieldEnum = {
 } as const
 
 export type RestricaoScalarFieldEnum = (typeof RestricaoScalarFieldEnum)[keyof typeof RestricaoScalarFieldEnum]
+
+
+export const ResultadoSorteioScalarFieldEnum = {
+  id: 'id',
+  eventoId: 'eventoId',
+  participanteId: 'participanteId',
+  sorteadoId: 'sorteadoId',
+  tokenHash: 'tokenHash',
+  criadoEm: 'criadoEm'
+} as const
+
+export type ResultadoSorteioScalarFieldEnum = (typeof ResultadoSorteioScalarFieldEnum)[keyof typeof ResultadoSorteioScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -811,6 +891,13 @@ export const ParticipanteOrderByRelevanceFieldEnum = {
 } as const
 
 export type ParticipanteOrderByRelevanceFieldEnum = (typeof ParticipanteOrderByRelevanceFieldEnum)[keyof typeof ParticipanteOrderByRelevanceFieldEnum]
+
+
+export const ResultadoSorteioOrderByRelevanceFieldEnum = {
+  tokenHash: 'tokenHash'
+} as const
+
+export type ResultadoSorteioOrderByRelevanceFieldEnum = (typeof ResultadoSorteioOrderByRelevanceFieldEnum)[keyof typeof ResultadoSorteioOrderByRelevanceFieldEnum]
 
 
 
@@ -1015,6 +1102,7 @@ export type GlobalOmitConfig = {
   evento?: Prisma.EventoOmit
   participante?: Prisma.ParticipanteOmit
   restricao?: Prisma.RestricaoOmit
+  resultadoSorteio?: Prisma.ResultadoSorteioOmit
 }
 
 /* Types for Logging */

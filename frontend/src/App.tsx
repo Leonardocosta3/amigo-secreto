@@ -1,9 +1,9 @@
-
 import { useEffect, useState } from "react";
 
 import Login, { type Usuario } from "./components/Login";
 import Painel from "./components/Painel";
 import Restricoes from "./components/Restricoes";
+import Resultado from "./components/Resultado";
 
 import {
   apiFetch,
@@ -18,8 +18,19 @@ export default function App() {
   const [eventoId, setEventoId] = useState<number | null>(null);
   const [verificando, setVerificando] = useState(true);
 
+  const caminho = window.location.pathname;
+
+  const tokenResultado = caminho.match(
+    /^\/resultado\/([a-fA-F0-9]{64})\/?$/
+  )?.[1];
+
   useEffect(() => {
     async function verificarSessao() {
+      if (tokenResultado) {
+        setVerificando(false);
+        return;
+      }
+
       if (!obterToken()) {
         setVerificando(false);
         return;
@@ -37,12 +48,16 @@ export default function App() {
     }
 
     void verificarSessao();
-  }, []);
+  }, [tokenResultado]);
 
   function sair() {
     removerToken();
     setUsuario(null);
     setEventoId(null);
+  }
+
+  if (tokenResultado) {
+    return <Resultado token={tokenResultado} />;
   }
 
   if (verificando) {

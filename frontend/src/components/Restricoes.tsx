@@ -1,5 +1,5 @@
 
-
+import SorteioDefinitivo from "./SorteioDefinitivo";
 import Participantes from "./Participantes";
 import { useEffect, useState } from "react";
 import {
@@ -414,6 +414,8 @@ export default function Restricoes({
         )}
 
       </section>
+      {/* SORTEIO DEFINITIVO */}
+        <SorteioDefinitivo eventoId={eventoId} />
 
       {/* MENSAGENS */}
       {mensagem && (

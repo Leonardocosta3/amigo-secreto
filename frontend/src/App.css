@@ -450,3 +450,90 @@ button:disabled {
     grid-template-columns: 1fr;
   }
 }
+
+.resultado-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: linear-gradient(135deg, #f8fafc, #e0e7ff);
+}
+
+.resultado-card {
+  width: 100%;
+  max-width: 460px;
+  padding: 36px 28px;
+  background: white;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
+}
+
+.resultado-card h1 {
+  margin: 20px 0;
+  font-size: 28px;
+}
+
+.resultado-card p {
+  margin: 18px 0;
+  line-height: 1.6;
+}
+
+.resultado-card button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 10px;
+  background: #4f46e5;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.resultado-card button:hover {
+  background: #4338ca;
+}
+
+.resultado-revelado {
+  margin-top: 24px;
+  padding: 24px;
+  background: #eef2ff;
+  border-radius: 14px;
+}
+
+.resultado-revelado h2 {
+  font-size: 32px;
+  color: #4338ca;
+  overflow-wrap: anywhere;
+}
+
+.acoes-sorteio {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.acoes-sorteio button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+}
+
+.acoes-sorteio button:hover {
+  background: #eef2ff;
+}
+
+.acoes-sorteio button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -237,6 +237,8 @@ export type ParticipanteWhereInput = {
   eventoId?: Prisma.IntFilter<"Participante"> | number
   criadoEm?: Prisma.DateTimeFilter<"Participante"> | Date | string
   evento?: Prisma.XOR<Prisma.EventoScalarRelationFilter, Prisma.EventoWhereInput>
+  resultadoComoSorteador?: Prisma.XOR<Prisma.ResultadoSorteioNullableScalarRelationFilter, Prisma.ResultadoSorteioWhereInput> | null
+  resultadosComoSorteado?: Prisma.ResultadoSorteioListRelationFilter
 }
 
 export type ParticipanteOrderByWithRelationInput = {
@@ -248,6 +250,8 @@ export type ParticipanteOrderByWithRelationInput = {
   eventoId?: Prisma.SortOrder
   criadoEm?: Prisma.SortOrder
   evento?: Prisma.EventoOrderByWithRelationInput
+  resultadoComoSorteador?: Prisma.ResultadoSorteioOrderByWithRelationInput
+  resultadosComoSorteado?: Prisma.ResultadoSorteioOrderByRelationAggregateInput
   _relevance?: Prisma.ParticipanteOrderByRelevanceInput
 }
 
@@ -263,6 +267,8 @@ export type ParticipanteWhereUniqueInput = Prisma.AtLeast<{
   eventoId?: Prisma.IntFilter<"Participante"> | number
   criadoEm?: Prisma.DateTimeFilter<"Participante"> | Date | string
   evento?: Prisma.XOR<Prisma.EventoScalarRelationFilter, Prisma.EventoWhereInput>
+  resultadoComoSorteador?: Prisma.XOR<Prisma.ResultadoSorteioNullableScalarRelationFilter, Prisma.ResultadoSorteioWhereInput> | null
+  resultadosComoSorteado?: Prisma.ResultadoSorteioListRelationFilter
 }, "id">
 
 export type ParticipanteOrderByWithAggregationInput = {
@@ -300,6 +306,8 @@ export type ParticipanteCreateInput = {
   ativo?: boolean
   criadoEm?: Date | string
   evento: Prisma.EventoCreateNestedOneWithoutParticipantesInput
+  resultadoComoSorteador?: Prisma.ResultadoSorteioCreateNestedOneWithoutParticipanteInput
+  resultadosComoSorteado?: Prisma.ResultadoSorteioCreateNestedManyWithoutSorteadoInput
 }
 
 export type ParticipanteUncheckedCreateInput = {
@@ -310,6 +318,8 @@ export type ParticipanteUncheckedCreateInput = {
   ativo?: boolean
   eventoId: number
   criadoEm?: Date | string
+  resultadoComoSorteador?: Prisma.ResultadoSorteioUncheckedCreateNestedOneWithoutParticipanteInput
+  resultadosComoSorteado?: Prisma.ResultadoSorteioUncheckedCreateNestedManyWithoutSorteadoInput
 }
 
 export type ParticipanteUpdateInput = {
@@ -319,6 +329,8 @@ export type ParticipanteUpdateInput = {
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   evento?: Prisma.EventoUpdateOneRequiredWithoutParticipantesNestedInput
+  resultadoComoSorteador?: Prisma.ResultadoSorteioUpdateOneWithoutParticipanteNestedInput
+  resultadosComoSorteado?: Prisma.ResultadoSorteioUpdateManyWithoutSorteadoNestedInput
 }
 
 export type ParticipanteUncheckedUpdateInput = {
@@ -329,6 +341,8 @@ export type ParticipanteUncheckedUpdateInput = {
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   eventoId?: Prisma.IntFieldUpdateOperationsInput | number
   criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  resultadoComoSorteador?: Prisma.ResultadoSorteioUncheckedUpdateOneWithoutParticipanteNestedInput
+  resultadosComoSorteado?: Prisma.ResultadoSorteioUncheckedUpdateManyWithoutSorteadoNestedInput
 }
 
 export type ParticipanteCreateManyInput = {
@@ -415,6 +429,11 @@ export type ParticipanteSumOrderByAggregateInput = {
   eventoId?: Prisma.SortOrder
 }
 
+export type ParticipanteScalarRelationFilter = {
+  is?: Prisma.ParticipanteWhereInput
+  isNot?: Prisma.ParticipanteWhereInput
+}
+
 export type ParticipanteCreateNestedManyWithoutEventoInput = {
   create?: Prisma.XOR<Prisma.ParticipanteCreateWithoutEventoInput, Prisma.ParticipanteUncheckedCreateWithoutEventoInput> | Prisma.ParticipanteCreateWithoutEventoInput[] | Prisma.ParticipanteUncheckedCreateWithoutEventoInput[]
   connectOrCreate?: Prisma.ParticipanteCreateOrConnectWithoutEventoInput | Prisma.ParticipanteCreateOrConnectWithoutEventoInput[]
@@ -461,12 +480,42 @@ export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
 
+export type ParticipanteCreateNestedOneWithoutResultadoComoSorteadorInput = {
+  create?: Prisma.XOR<Prisma.ParticipanteCreateWithoutResultadoComoSorteadorInput, Prisma.ParticipanteUncheckedCreateWithoutResultadoComoSorteadorInput>
+  connectOrCreate?: Prisma.ParticipanteCreateOrConnectWithoutResultadoComoSorteadorInput
+  connect?: Prisma.ParticipanteWhereUniqueInput
+}
+
+export type ParticipanteCreateNestedOneWithoutResultadosComoSorteadoInput = {
+  create?: Prisma.XOR<Prisma.ParticipanteCreateWithoutResultadosComoSorteadoInput, Prisma.ParticipanteUncheckedCreateWithoutResultadosComoSorteadoInput>
+  connectOrCreate?: Prisma.ParticipanteCreateOrConnectWithoutResultadosComoSorteadoInput
+  connect?: Prisma.ParticipanteWhereUniqueInput
+}
+
+export type ParticipanteUpdateOneRequiredWithoutResultadoComoSorteadorNestedInput = {
+  create?: Prisma.XOR<Prisma.ParticipanteCreateWithoutResultadoComoSorteadorInput, Prisma.ParticipanteUncheckedCreateWithoutResultadoComoSorteadorInput>
+  connectOrCreate?: Prisma.ParticipanteCreateOrConnectWithoutResultadoComoSorteadorInput
+  upsert?: Prisma.ParticipanteUpsertWithoutResultadoComoSorteadorInput
+  connect?: Prisma.ParticipanteWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ParticipanteUpdateToOneWithWhereWithoutResultadoComoSorteadorInput, Prisma.ParticipanteUpdateWithoutResultadoComoSorteadorInput>, Prisma.ParticipanteUncheckedUpdateWithoutResultadoComoSorteadorInput>
+}
+
+export type ParticipanteUpdateOneRequiredWithoutResultadosComoSorteadoNestedInput = {
+  create?: Prisma.XOR<Prisma.ParticipanteCreateWithoutResultadosComoSorteadoInput, Prisma.ParticipanteUncheckedCreateWithoutResultadosComoSorteadoInput>
+  connectOrCreate?: Prisma.ParticipanteCreateOrConnectWithoutResultadosComoSorteadoInput
+  upsert?: Prisma.ParticipanteUpsertWithoutResultadosComoSorteadoInput
+  connect?: Prisma.ParticipanteWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ParticipanteUpdateToOneWithWhereWithoutResultadosComoSorteadoInput, Prisma.ParticipanteUpdateWithoutResultadosComoSorteadoInput>, Prisma.ParticipanteUncheckedUpdateWithoutResultadosComoSorteadoInput>
+}
+
 export type ParticipanteCreateWithoutEventoInput = {
   nome: string
   email?: string | null
   telefone?: string | null
   ativo?: boolean
   criadoEm?: Date | string
+  resultadoComoSorteador?: Prisma.ResultadoSorteioCreateNestedOneWithoutParticipanteInput
+  resultadosComoSorteado?: Prisma.ResultadoSorteioCreateNestedManyWithoutSorteadoInput
 }
 
 export type ParticipanteUncheckedCreateWithoutEventoInput = {
@@ -476,6 +525,8 @@ export type ParticipanteUncheckedCreateWithoutEventoInput = {
   telefone?: string | null
   ativo?: boolean
   criadoEm?: Date | string
+  resultadoComoSorteador?: Prisma.ResultadoSorteioUncheckedCreateNestedOneWithoutParticipanteInput
+  resultadosComoSorteado?: Prisma.ResultadoSorteioUncheckedCreateNestedManyWithoutSorteadoInput
 }
 
 export type ParticipanteCreateOrConnectWithoutEventoInput = {
@@ -517,6 +568,122 @@ export type ParticipanteScalarWhereInput = {
   criadoEm?: Prisma.DateTimeFilter<"Participante"> | Date | string
 }
 
+export type ParticipanteCreateWithoutResultadoComoSorteadorInput = {
+  nome: string
+  email?: string | null
+  telefone?: string | null
+  ativo?: boolean
+  criadoEm?: Date | string
+  evento: Prisma.EventoCreateNestedOneWithoutParticipantesInput
+  resultadosComoSorteado?: Prisma.ResultadoSorteioCreateNestedManyWithoutSorteadoInput
+}
+
+export type ParticipanteUncheckedCreateWithoutResultadoComoSorteadorInput = {
+  id?: number
+  nome: string
+  email?: string | null
+  telefone?: string | null
+  ativo?: boolean
+  eventoId: number
+  criadoEm?: Date | string
+  resultadosComoSorteado?: Prisma.ResultadoSorteioUncheckedCreateNestedManyWithoutSorteadoInput
+}
+
+export type ParticipanteCreateOrConnectWithoutResultadoComoSorteadorInput = {
+  where: Prisma.ParticipanteWhereUniqueInput
+  create: Prisma.XOR<Prisma.ParticipanteCreateWithoutResultadoComoSorteadorInput, Prisma.ParticipanteUncheckedCreateWithoutResultadoComoSorteadorInput>
+}
+
+export type ParticipanteCreateWithoutResultadosComoSorteadoInput = {
+  nome: string
+  email?: string | null
+  telefone?: string | null
+  ativo?: boolean
+  criadoEm?: Date | string
+  evento: Prisma.EventoCreateNestedOneWithoutParticipantesInput
+  resultadoComoSorteador?: Prisma.ResultadoSorteioCreateNestedOneWithoutParticipanteInput
+}
+
+export type ParticipanteUncheckedCreateWithoutResultadosComoSorteadoInput = {
+  id?: number
+  nome: string
+  email?: string | null
+  telefone?: string | null
+  ativo?: boolean
+  eventoId: number
+  criadoEm?: Date | string
+  resultadoComoSorteador?: Prisma.ResultadoSorteioUncheckedCreateNestedOneWithoutParticipanteInput
+}
+
+export type ParticipanteCreateOrConnectWithoutResultadosComoSorteadoInput = {
+  where: Prisma.ParticipanteWhereUniqueInput
+  create: Prisma.XOR<Prisma.ParticipanteCreateWithoutResultadosComoSorteadoInput, Prisma.ParticipanteUncheckedCreateWithoutResultadosComoSorteadoInput>
+}
+
+export type ParticipanteUpsertWithoutResultadoComoSorteadorInput = {
+  update: Prisma.XOR<Prisma.ParticipanteUpdateWithoutResultadoComoSorteadorInput, Prisma.ParticipanteUncheckedUpdateWithoutResultadoComoSorteadorInput>
+  create: Prisma.XOR<Prisma.ParticipanteCreateWithoutResultadoComoSorteadorInput, Prisma.ParticipanteUncheckedCreateWithoutResultadoComoSorteadorInput>
+  where?: Prisma.ParticipanteWhereInput
+}
+
+export type ParticipanteUpdateToOneWithWhereWithoutResultadoComoSorteadorInput = {
+  where?: Prisma.ParticipanteWhereInput
+  data: Prisma.XOR<Prisma.ParticipanteUpdateWithoutResultadoComoSorteadorInput, Prisma.ParticipanteUncheckedUpdateWithoutResultadoComoSorteadorInput>
+}
+
+export type ParticipanteUpdateWithoutResultadoComoSorteadorInput = {
+  nome?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telefone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  evento?: Prisma.EventoUpdateOneRequiredWithoutParticipantesNestedInput
+  resultadosComoSorteado?: Prisma.ResultadoSorteioUpdateManyWithoutSorteadoNestedInput
+}
+
+export type ParticipanteUncheckedUpdateWithoutResultadoComoSorteadorInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  nome?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telefone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  eventoId?: Prisma.IntFieldUpdateOperationsInput | number
+  criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  resultadosComoSorteado?: Prisma.ResultadoSorteioUncheckedUpdateManyWithoutSorteadoNestedInput
+}
+
+export type ParticipanteUpsertWithoutResultadosComoSorteadoInput = {
+  update: Prisma.XOR<Prisma.ParticipanteUpdateWithoutResultadosComoSorteadoInput, Prisma.ParticipanteUncheckedUpdateWithoutResultadosComoSorteadoInput>
+  create: Prisma.XOR<Prisma.ParticipanteCreateWithoutResultadosComoSorteadoInput, Prisma.ParticipanteUncheckedCreateWithoutResultadosComoSorteadoInput>
+  where?: Prisma.ParticipanteWhereInput
+}
+
+export type ParticipanteUpdateToOneWithWhereWithoutResultadosComoSorteadoInput = {
+  where?: Prisma.ParticipanteWhereInput
+  data: Prisma.XOR<Prisma.ParticipanteUpdateWithoutResultadosComoSorteadoInput, Prisma.ParticipanteUncheckedUpdateWithoutResultadosComoSorteadoInput>
+}
+
+export type ParticipanteUpdateWithoutResultadosComoSorteadoInput = {
+  nome?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telefone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  evento?: Prisma.EventoUpdateOneRequiredWithoutParticipantesNestedInput
+  resultadoComoSorteador?: Prisma.ResultadoSorteioUpdateOneWithoutParticipanteNestedInput
+}
+
+export type ParticipanteUncheckedUpdateWithoutResultadosComoSorteadoInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  nome?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telefone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  eventoId?: Prisma.IntFieldUpdateOperationsInput | number
+  criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  resultadoComoSorteador?: Prisma.ResultadoSorteioUncheckedUpdateOneWithoutParticipanteNestedInput
+}
+
 export type ParticipanteCreateManyEventoInput = {
   id?: number
   nome: string
@@ -532,6 +699,8 @@ export type ParticipanteUpdateWithoutEventoInput = {
   telefone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  resultadoComoSorteador?: Prisma.ResultadoSorteioUpdateOneWithoutParticipanteNestedInput
+  resultadosComoSorteado?: Prisma.ResultadoSorteioUpdateManyWithoutSorteadoNestedInput
 }
 
 export type ParticipanteUncheckedUpdateWithoutEventoInput = {
@@ -541,6 +710,8 @@ export type ParticipanteUncheckedUpdateWithoutEventoInput = {
   telefone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  resultadoComoSorteador?: Prisma.ResultadoSorteioUncheckedUpdateOneWithoutParticipanteNestedInput
+  resultadosComoSorteado?: Prisma.ResultadoSorteioUncheckedUpdateManyWithoutSorteadoNestedInput
 }
 
 export type ParticipanteUncheckedUpdateManyWithoutEventoInput = {
@@ -553,6 +724,35 @@ export type ParticipanteUncheckedUpdateManyWithoutEventoInput = {
 }
 
 
+/**
+ * Count Type ParticipanteCountOutputType
+ */
+
+export type ParticipanteCountOutputType = {
+  resultadosComoSorteado: number
+}
+
+export type ParticipanteCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  resultadosComoSorteado?: boolean | ParticipanteCountOutputTypeCountResultadosComoSorteadoArgs
+}
+
+/**
+ * ParticipanteCountOutputType without action
+ */
+export type ParticipanteCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ParticipanteCountOutputType
+   */
+  select?: Prisma.ParticipanteCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ParticipanteCountOutputType without action
+ */
+export type ParticipanteCountOutputTypeCountResultadosComoSorteadoArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ResultadoSorteioWhereInput
+}
+
 
 export type ParticipanteSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -563,6 +763,9 @@ export type ParticipanteSelect<ExtArgs extends runtime.Types.Extensions.Internal
   eventoId?: boolean
   criadoEm?: boolean
   evento?: boolean | Prisma.EventoDefaultArgs<ExtArgs>
+  resultadoComoSorteador?: boolean | Prisma.Participante$resultadoComoSorteadorArgs<ExtArgs>
+  resultadosComoSorteado?: boolean | Prisma.Participante$resultadosComoSorteadoArgs<ExtArgs>
+  _count?: boolean | Prisma.ParticipanteCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["participante"]>
 
 
@@ -580,12 +783,17 @@ export type ParticipanteSelectScalar = {
 export type ParticipanteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nome" | "email" | "telefone" | "ativo" | "eventoId" | "criadoEm", ExtArgs["result"]["participante"]>
 export type ParticipanteInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   evento?: boolean | Prisma.EventoDefaultArgs<ExtArgs>
+  resultadoComoSorteador?: boolean | Prisma.Participante$resultadoComoSorteadorArgs<ExtArgs>
+  resultadosComoSorteado?: boolean | Prisma.Participante$resultadosComoSorteadoArgs<ExtArgs>
+  _count?: boolean | Prisma.ParticipanteCountOutputTypeDefaultArgs<ExtArgs>
 }
 
 export type $ParticipantePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Participante"
   objects: {
     evento: Prisma.$EventoPayload<ExtArgs>
+    resultadoComoSorteador: Prisma.$ResultadoSorteioPayload<ExtArgs> | null
+    resultadosComoSorteado: Prisma.$ResultadoSorteioPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -936,6 +1144,8 @@ readonly fields: ParticipanteFieldRefs;
 export interface Prisma__ParticipanteClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   evento<T extends Prisma.EventoDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EventoDefaultArgs<ExtArgs>>): Prisma.Prisma__EventoClient<runtime.Types.Result.GetResult<Prisma.$EventoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  resultadoComoSorteador<T extends Prisma.Participante$resultadoComoSorteadorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Participante$resultadoComoSorteadorArgs<ExtArgs>>): Prisma.Prisma__ResultadoSorteioClient<runtime.Types.Result.GetResult<Prisma.$ResultadoSorteioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  resultadosComoSorteado<T extends Prisma.Participante$resultadosComoSorteadoArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Participante$resultadosComoSorteadoArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ResultadoSorteioPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1317,6 +1527,49 @@ export type ParticipanteDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many Participantes to delete.
    */
   limit?: number
+}
+
+/**
+ * Participante.resultadoComoSorteador
+ */
+export type Participante$resultadoComoSorteadorArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ResultadoSorteio
+   */
+  select?: Prisma.ResultadoSorteioSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ResultadoSorteio
+   */
+  omit?: Prisma.ResultadoSorteioOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ResultadoSorteioInclude<ExtArgs> | null
+  where?: Prisma.ResultadoSorteioWhereInput
+}
+
+/**
+ * Participante.resultadosComoSorteado
+ */
+export type Participante$resultadosComoSorteadoArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ResultadoSorteio
+   */
+  select?: Prisma.ResultadoSorteioSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ResultadoSorteio
+   */
+  omit?: Prisma.ResultadoSorteioOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ResultadoSorteioInclude<ExtArgs> | null
+  where?: Prisma.ResultadoSorteioWhereInput
+  orderBy?: Prisma.ResultadoSorteioOrderByWithRelationInput | Prisma.ResultadoSorteioOrderByWithRelationInput[]
+  cursor?: Prisma.ResultadoSorteioWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ResultadoSorteioScalarFieldEnum | Prisma.ResultadoSorteioScalarFieldEnum[]
 }
 
 /**

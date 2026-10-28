@@ -59,3 +59,8 @@ export type Participante = Prisma.ParticipanteModel
  * 
  */
 export type Restricao = Prisma.RestricaoModel
+/**
+ * Model ResultadoSorteio
+ * 
+ */
+export type ResultadoSorteio = Prisma.ResultadoSorteioModel

@@ -276,7 +276,7 @@ export default function Restricoes({
 
         <div>
           <h1>
-            Amigo Secreto Inteligente
+            Amigo Secreto de Natal
           </h1>
 
           <p>

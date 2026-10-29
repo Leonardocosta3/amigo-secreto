@@ -50,11 +50,6 @@ export type Usuario = Prisma.UsuarioModel
  */
 export type Evento = Prisma.EventoModel
 /**
- * Model Participante
- * 
- */
-export type Participante = Prisma.ParticipanteModel
-/**
  * Model Restricao
  * 
  */
@@ -64,3 +59,13 @@ export type Restricao = Prisma.RestricaoModel
  * 
  */
 export type ResultadoSorteio = Prisma.ResultadoSorteioModel
+/**
+ * Model Participante
+ * 
+ */
+export type Participante = Prisma.ParticipanteModel
+/**
+ * Model ParticipanteAcesso
+ * 
+ */
+export type ParticipanteAcesso = Prisma.ParticipanteAcessoModel

@@ -1,3 +1,4 @@
+
 import { Router } from "express";
 import { prisma } from "../lib/prisma.js";
 
@@ -54,6 +55,12 @@ router.post("/", async (req, res) => {
       });
     }
 
+    if (evento.sorteioRealizadoEm !== null) {
+      return res.status(409).json({
+        erro: "Não é possível cadastrar participantes após o sorteio definitivo."
+      });
+    }
+
     const participante = await prisma.participante.create({
       data: {
         nome: nome.trim(),
@@ -78,7 +85,9 @@ router.put("/:id", async (req, res) => {
     const id = Number(req.params.id);
 
     if (!Number.isInteger(id) || id <= 0) {
-      return res.status(400).json({ erro: "ID inválido." });
+      return res.status(400).json({
+        erro: "ID inválido."
+      });
     }
 
     const { nome, email, telefone, ativo } = req.body;
@@ -96,12 +105,21 @@ router.put("/:id", async (req, res) => {
     }
 
     const existente = await prisma.participante.findUnique({
-      where: { id }
+      where: { id },
+      include: {
+        evento: true
+      }
     });
 
     if (!existente) {
       return res.status(404).json({
         erro: "Participante não encontrado."
+      });
+    }
+
+    if (existente.evento.sorteioRealizadoEm !== null) {
+      return res.status(409).json({
+        erro: "Não é possível editar participantes após o sorteio definitivo."
       });
     }
 
@@ -124,34 +142,101 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// Excluir participante
+// Excluir participante e suas restrições
 router.delete("/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);
 
     if (!Number.isInteger(id) || id <= 0) {
-      return res.status(400).json({ erro: "ID inválido." });
-    }
-
-    const existente = await prisma.participante.findUnique({
-      where: { id }
-    });
-
-    if (!existente) {
-      return res.status(404).json({
-        erro: "Participante não encontrado."
+      return res.status(400).json({
+        erro: "ID inválido."
       });
     }
 
-    await prisma.participante.delete({
-      where: { id }
+    const resultado = await prisma.$transaction(async (tx) => {
+
+      // Localizar participante e evento
+      const existente = await tx.participante.findUnique({
+        where: { id },
+        include: {
+          evento: true
+        }
+      });
+
+      if (!existente) {
+        return {
+          status: 404,
+          erro: "Participante não encontrado."
+        };
+      }
+
+      const eventoId = existente.eventoId;
+
+      // Bloquear exclusão após sorteio definitivo
+      const resultadoExistente =
+        await tx.resultadoSorteio.findFirst({
+          where: {
+            eventoId
+          },
+          select: { id: true }
+        });
+
+      if (
+        existente.evento.sorteioRealizadoEm !== null ||
+        resultadoExistente
+      ) {
+        return {
+          status: 409,
+          erro: "Não é possível excluir participantes após o sorteio definitivo."
+        };
+      }
+
+      // Remover restrições em que a pessoa aparece
+      // como participante ou destinatário
+      const restricoesExcluidas =
+        await tx.restricao.deleteMany({
+          where: {
+            eventoId,
+            OR: [
+              { participanteId: id },
+              { destinatarioId: id }
+            ]
+          }
+        });
+
+      // Remover eventual cadastro de acesso
+      await tx.participanteAcesso.deleteMany({
+        where: {
+          participanteId: id
+        }
+      });
+
+      // Excluir o participante
+      await tx.participante.delete({
+        where: { id }
+      });
+
+      return {
+        status: 200,
+        mensagem: "Participante excluído com sucesso!",
+        restricoesExcluidas: restricoesExcluidas.count
+      };
     });
 
-    return res.json({
-      mensagem: "Participante excluído com sucesso!"
-    });
+    return res.status(resultado.status).json(
+      resultado.status === 200
+        ? {
+            mensagem: resultado.mensagem,
+            restricoesExcluidas: resultado.restricoesExcluidas
+          }
+        : {
+            erro: resultado.erro
+          }
+    );
+
   } catch (error) {
-    console.error(error);
+    console.error("Erro ao excluir participante:", error);
+
     return res.status(500).json({
       erro: "Erro ao excluir participante."
     });

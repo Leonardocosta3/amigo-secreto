@@ -1,9 +1,60 @@
+
 import { Router } from "express";
 import { prisma } from "../lib/prisma.js";
 
 const router = Router();
 
+// =====================================================
+// VERIFICAR SE O SORTEIO DEFINITIVO JÁ FOI REALIZADO
+// =====================================================
+
+async function verificarSorteioDefinitivo(eventoId: number) {
+
+  const evento = await prisma.evento.findUnique({
+    where: { id: eventoId },
+    select: {
+      id: true,
+      sorteioRealizadoEm: true
+    }
+  });
+
+  if (!evento) {
+    return {
+      bloqueado: true,
+      status: 404,
+      erro: "Evento não encontrado."
+    };
+  }
+
+  // Verificar se existem resultados definitivos
+  const resultadoExistente =
+    await prisma.resultadoSorteio.findFirst({
+      where: { eventoId },
+      select: { id: true }
+    });
+
+  if (
+    evento.sorteioRealizadoEm !== null ||
+    resultadoExistente !== null
+  ) {
+    return {
+      bloqueado: true,
+      status: 409,
+      erro: "Não é possível alterar restrições após o sorteio definitivo."
+    };
+  }
+
+  return {
+    bloqueado: false,
+    status: 200,
+    erro: ""
+  };
+}
+
+// =====================================================
 // CADASTRAR RESTRIÇÃO
+// =====================================================
+
 router.post("/", async (req, res) => {
   try {
     const {
@@ -13,6 +64,7 @@ router.post("/", async (req, res) => {
       tipo
     } = req.body;
 
+    // Validar os dados recebidos
     if (
       !Number.isInteger(eventoId) ||
       !Number.isInteger(participanteId) ||
@@ -27,18 +79,33 @@ router.post("/", async (req, res) => {
       });
     }
 
+    // Impedir restrição para a própria pessoa
     if (participanteId === destinatarioId) {
       return res.status(400).json({
         erro: "Não é permitido criar uma restrição para a própria pessoa."
       });
     }
 
-    const participantes = await prisma.participante.findMany({
-      where: {
-        eventoId,
-        id: { in: [participanteId, destinatarioId] }
-      }
-    });
+    // Verificar se o sorteio já foi realizado
+    const verificacao =
+      await verificarSorteioDefinitivo(eventoId);
+
+    if (verificacao.bloqueado) {
+      return res.status(verificacao.status).json({
+        erro: verificacao.erro
+      });
+    }
+
+    // Verificar se ambos pertencem ao evento
+    const participantes =
+      await prisma.participante.findMany({
+        where: {
+          eventoId,
+          id: {
+            in: [participanteId, destinatarioId]
+          }
+        }
+      });
 
     if (participantes.length !== 2) {
       return res.status(400).json({
@@ -46,16 +113,18 @@ router.post("/", async (req, res) => {
       });
     }
 
-    const existente = await prisma.restricao.findUnique({
-      where: {
-        eventoId_participanteId_destinatarioId_tipo: {
-          eventoId,
-          participanteId,
-          destinatarioId,
-          tipo
+    // Verificar se a restrição já existe
+    const existente =
+      await prisma.restricao.findUnique({
+        where: {
+          eventoId_participanteId_destinatarioId_tipo: {
+            eventoId,
+            participanteId,
+            destinatarioId,
+            tipo
+          }
         }
-      }
-    });
+      });
 
     if (existente) {
       return res.status(409).json({
@@ -63,6 +132,7 @@ router.post("/", async (req, res) => {
       });
     }
 
+    // Cadastrar restrição
     const restricao = await prisma.restricao.create({
       data: {
         eventoId,
@@ -78,7 +148,7 @@ router.post("/", async (req, res) => {
     });
 
   } catch (error) {
-    console.error(error);
+    console.error("Erro ao cadastrar restrição:", error);
 
     return res.status(500).json({
       erro: "Erro ao cadastrar restrição."
@@ -86,26 +156,33 @@ router.post("/", async (req, res) => {
   }
 });
 
+// =====================================================
 // LISTAR RESTRIÇÕES DE UM EVENTO
+// =====================================================
+
 router.get("/", async (req, res) => {
   try {
     const eventoId = Number(req.query.eventoId);
 
-    if (!Number.isInteger(eventoId) || eventoId <= 0) {
+    if (
+      !Number.isInteger(eventoId) ||
+      eventoId <= 0
+    ) {
       return res.status(400).json({
         erro: "Informe um eventoId válido."
       });
     }
 
-    const restricoes = await prisma.restricao.findMany({
-      where: { eventoId },
-      orderBy: { id: "asc" }
-    });
+    const restricoes =
+      await prisma.restricao.findMany({
+        where: { eventoId },
+        orderBy: { id: "asc" }
+      });
 
     return res.json(restricoes);
 
   } catch (error) {
-    console.error(error);
+    console.error("Erro ao listar restrições:", error);
 
     return res.status(500).json({
       erro: "Erro ao listar restrições."
@@ -113,20 +190,28 @@ router.get("/", async (req, res) => {
   }
 });
 
+// =====================================================
 // EXCLUIR RESTRIÇÃO
+// =====================================================
+
 router.delete("/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);
 
-    if (!Number.isInteger(id) || id <= 0) {
+    if (
+      !Number.isInteger(id) ||
+      id <= 0
+    ) {
       return res.status(400).json({
         erro: "ID inválido."
       });
     }
 
-    const existente = await prisma.restricao.findUnique({
-      where: { id }
-    });
+    // Localizar restrição
+    const existente =
+      await prisma.restricao.findUnique({
+        where: { id }
+      });
 
     if (!existente) {
       return res.status(404).json({
@@ -134,6 +219,19 @@ router.delete("/:id", async (req, res) => {
       });
     }
 
+    // Verificar se o sorteio definitivo já ocorreu
+    const verificacao =
+      await verificarSorteioDefinitivo(
+        existente.eventoId
+      );
+
+    if (verificacao.bloqueado) {
+      return res.status(verificacao.status).json({
+        erro: verificacao.erro
+      });
+    }
+
+    // Excluir restrição
     await prisma.restricao.delete({
       where: { id }
     });
@@ -143,7 +241,7 @@ router.delete("/:id", async (req, res) => {
     });
 
   } catch (error) {
-    console.error(error);
+    console.error("Erro ao excluir restrição:", error);
 
     return res.status(500).json({
       erro: "Erro ao excluir restrição."

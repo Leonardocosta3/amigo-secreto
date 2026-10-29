@@ -59,7 +59,7 @@ export default function Login({ onLogin }: LoginProps) {
           <Gift size={32} />
         </div>
 
-        <h1>Amigo Secreto Inteligente</h1>
+        <h1>Amigo Secreto</h1>
         <p>Entre para organizar seus sorteios.</p>
 
         <form onSubmit={entrar}>

@@ -484,20 +484,6 @@ export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
 
-export type EventoCreateNestedOneWithoutParticipantesInput = {
-  create?: Prisma.XOR<Prisma.EventoCreateWithoutParticipantesInput, Prisma.EventoUncheckedCreateWithoutParticipantesInput>
-  connectOrCreate?: Prisma.EventoCreateOrConnectWithoutParticipantesInput
-  connect?: Prisma.EventoWhereUniqueInput
-}
-
-export type EventoUpdateOneRequiredWithoutParticipantesNestedInput = {
-  create?: Prisma.XOR<Prisma.EventoCreateWithoutParticipantesInput, Prisma.EventoUncheckedCreateWithoutParticipantesInput>
-  connectOrCreate?: Prisma.EventoCreateOrConnectWithoutParticipantesInput
-  upsert?: Prisma.EventoUpsertWithoutParticipantesInput
-  connect?: Prisma.EventoWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.EventoUpdateToOneWithWhereWithoutParticipantesInput, Prisma.EventoUpdateWithoutParticipantesInput>, Prisma.EventoUncheckedUpdateWithoutParticipantesInput>
-}
-
 export type EventoCreateNestedOneWithoutResultadosInput = {
   create?: Prisma.XOR<Prisma.EventoCreateWithoutResultadosInput, Prisma.EventoUncheckedCreateWithoutResultadosInput>
   connectOrCreate?: Prisma.EventoCreateOrConnectWithoutResultadosInput
@@ -510,6 +496,20 @@ export type EventoUpdateOneRequiredWithoutResultadosNestedInput = {
   upsert?: Prisma.EventoUpsertWithoutResultadosInput
   connect?: Prisma.EventoWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.EventoUpdateToOneWithWhereWithoutResultadosInput, Prisma.EventoUpdateWithoutResultadosInput>, Prisma.EventoUncheckedUpdateWithoutResultadosInput>
+}
+
+export type EventoCreateNestedOneWithoutParticipantesInput = {
+  create?: Prisma.XOR<Prisma.EventoCreateWithoutParticipantesInput, Prisma.EventoUncheckedCreateWithoutParticipantesInput>
+  connectOrCreate?: Prisma.EventoCreateOrConnectWithoutParticipantesInput
+  connect?: Prisma.EventoWhereUniqueInput
+}
+
+export type EventoUpdateOneRequiredWithoutParticipantesNestedInput = {
+  create?: Prisma.XOR<Prisma.EventoCreateWithoutParticipantesInput, Prisma.EventoUncheckedCreateWithoutParticipantesInput>
+  connectOrCreate?: Prisma.EventoCreateOrConnectWithoutParticipantesInput
+  upsert?: Prisma.EventoUpsertWithoutParticipantesInput
+  connect?: Prisma.EventoWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EventoUpdateToOneWithWhereWithoutParticipantesInput, Prisma.EventoUpdateWithoutParticipantesInput>, Prisma.EventoUncheckedUpdateWithoutParticipantesInput>
 }
 
 export type EventoCreateWithoutUsuarioInput = {
@@ -572,64 +572,6 @@ export type EventoScalarWhereInput = {
   sorteioRealizadoEm?: Prisma.DateTimeNullableFilter<"Evento"> | Date | string | null
 }
 
-export type EventoCreateWithoutParticipantesInput = {
-  nome: string
-  descricao?: string | null
-  dataEvento?: Date | string | null
-  criadoEm?: Date | string
-  sorteioRealizadoEm?: Date | string | null
-  usuario: Prisma.UsuarioCreateNestedOneWithoutEventosInput
-  resultados?: Prisma.ResultadoSorteioCreateNestedManyWithoutEventoInput
-}
-
-export type EventoUncheckedCreateWithoutParticipantesInput = {
-  id?: number
-  nome: string
-  descricao?: string | null
-  dataEvento?: Date | string | null
-  usuarioId: number
-  criadoEm?: Date | string
-  sorteioRealizadoEm?: Date | string | null
-  resultados?: Prisma.ResultadoSorteioUncheckedCreateNestedManyWithoutEventoInput
-}
-
-export type EventoCreateOrConnectWithoutParticipantesInput = {
-  where: Prisma.EventoWhereUniqueInput
-  create: Prisma.XOR<Prisma.EventoCreateWithoutParticipantesInput, Prisma.EventoUncheckedCreateWithoutParticipantesInput>
-}
-
-export type EventoUpsertWithoutParticipantesInput = {
-  update: Prisma.XOR<Prisma.EventoUpdateWithoutParticipantesInput, Prisma.EventoUncheckedUpdateWithoutParticipantesInput>
-  create: Prisma.XOR<Prisma.EventoCreateWithoutParticipantesInput, Prisma.EventoUncheckedCreateWithoutParticipantesInput>
-  where?: Prisma.EventoWhereInput
-}
-
-export type EventoUpdateToOneWithWhereWithoutParticipantesInput = {
-  where?: Prisma.EventoWhereInput
-  data: Prisma.XOR<Prisma.EventoUpdateWithoutParticipantesInput, Prisma.EventoUncheckedUpdateWithoutParticipantesInput>
-}
-
-export type EventoUpdateWithoutParticipantesInput = {
-  nome?: Prisma.StringFieldUpdateOperationsInput | string
-  descricao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dataEvento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  sorteioRealizadoEm?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  usuario?: Prisma.UsuarioUpdateOneRequiredWithoutEventosNestedInput
-  resultados?: Prisma.ResultadoSorteioUpdateManyWithoutEventoNestedInput
-}
-
-export type EventoUncheckedUpdateWithoutParticipantesInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  nome?: Prisma.StringFieldUpdateOperationsInput | string
-  descricao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dataEvento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  usuarioId?: Prisma.IntFieldUpdateOperationsInput | number
-  criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  sorteioRealizadoEm?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  resultados?: Prisma.ResultadoSorteioUncheckedUpdateManyWithoutEventoNestedInput
-}
-
 export type EventoCreateWithoutResultadosInput = {
   nome: string
   descricao?: string | null
@@ -686,6 +628,64 @@ export type EventoUncheckedUpdateWithoutResultadosInput = {
   criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sorteioRealizadoEm?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   participantes?: Prisma.ParticipanteUncheckedUpdateManyWithoutEventoNestedInput
+}
+
+export type EventoCreateWithoutParticipantesInput = {
+  nome: string
+  descricao?: string | null
+  dataEvento?: Date | string | null
+  criadoEm?: Date | string
+  sorteioRealizadoEm?: Date | string | null
+  usuario: Prisma.UsuarioCreateNestedOneWithoutEventosInput
+  resultados?: Prisma.ResultadoSorteioCreateNestedManyWithoutEventoInput
+}
+
+export type EventoUncheckedCreateWithoutParticipantesInput = {
+  id?: number
+  nome: string
+  descricao?: string | null
+  dataEvento?: Date | string | null
+  usuarioId: number
+  criadoEm?: Date | string
+  sorteioRealizadoEm?: Date | string | null
+  resultados?: Prisma.ResultadoSorteioUncheckedCreateNestedManyWithoutEventoInput
+}
+
+export type EventoCreateOrConnectWithoutParticipantesInput = {
+  where: Prisma.EventoWhereUniqueInput
+  create: Prisma.XOR<Prisma.EventoCreateWithoutParticipantesInput, Prisma.EventoUncheckedCreateWithoutParticipantesInput>
+}
+
+export type EventoUpsertWithoutParticipantesInput = {
+  update: Prisma.XOR<Prisma.EventoUpdateWithoutParticipantesInput, Prisma.EventoUncheckedUpdateWithoutParticipantesInput>
+  create: Prisma.XOR<Prisma.EventoCreateWithoutParticipantesInput, Prisma.EventoUncheckedCreateWithoutParticipantesInput>
+  where?: Prisma.EventoWhereInput
+}
+
+export type EventoUpdateToOneWithWhereWithoutParticipantesInput = {
+  where?: Prisma.EventoWhereInput
+  data: Prisma.XOR<Prisma.EventoUpdateWithoutParticipantesInput, Prisma.EventoUncheckedUpdateWithoutParticipantesInput>
+}
+
+export type EventoUpdateWithoutParticipantesInput = {
+  nome?: Prisma.StringFieldUpdateOperationsInput | string
+  descricao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dataEvento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sorteioRealizadoEm?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  usuario?: Prisma.UsuarioUpdateOneRequiredWithoutEventosNestedInput
+  resultados?: Prisma.ResultadoSorteioUpdateManyWithoutEventoNestedInput
+}
+
+export type EventoUncheckedUpdateWithoutParticipantesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  nome?: Prisma.StringFieldUpdateOperationsInput | string
+  descricao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dataEvento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  usuarioId?: Prisma.IntFieldUpdateOperationsInput | number
+  criadoEm?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sorteioRealizadoEm?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resultados?: Prisma.ResultadoSorteioUncheckedUpdateManyWithoutEventoNestedInput
 }
 
 export type EventoCreateManyUsuarioInput = {

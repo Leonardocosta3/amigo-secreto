@@ -363,11 +363,6 @@ export type ResultadoSorteioOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type ResultadoSorteioNullableScalarRelationFilter = {
-  is?: Prisma.ResultadoSorteioWhereInput | null
-  isNot?: Prisma.ResultadoSorteioWhereInput | null
-}
-
 export type ResultadoSorteioOrderByRelevanceInput = {
   fields: Prisma.ResultadoSorteioOrderByRelevanceFieldEnum | Prisma.ResultadoSorteioOrderByRelevanceFieldEnum[]
   sort: Prisma.SortOrder
@@ -418,6 +413,11 @@ export type ResultadoSorteioSumOrderByAggregateInput = {
   eventoId?: Prisma.SortOrder
   participanteId?: Prisma.SortOrder
   sorteadoId?: Prisma.SortOrder
+}
+
+export type ResultadoSorteioNullableScalarRelationFilter = {
+  is?: Prisma.ResultadoSorteioWhereInput | null
+  isNot?: Prisma.ResultadoSorteioWhereInput | null
 }
 
 export type ResultadoSorteioCreateNestedManyWithoutEventoInput = {

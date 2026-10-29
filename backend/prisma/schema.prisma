@@ -20,46 +20,29 @@ model Usuario {
 }
 
 model Evento {
-  id          Int       @id @default(autoincrement())
-  nome        String    @db.VarChar(150)
-  descricao   String?   @db.Text
-  dataEvento  DateTime? @map("data_evento")
-  usuarioId   Int       @map("usuario_id")
-  criadoEm    DateTime  @default(now()) @map("criado_em")
+  id         Int       @id @default(autoincrement())
+  nome       String    @db.VarChar(150)
+  descricao  String?   @db.Text
+  dataEvento DateTime? @map("data_evento")
+  usuarioId  Int       @map("usuario_id")
+  criadoEm   DateTime  @default(now()) @map("criado_em")
 
   sorteioRealizadoEm DateTime? @map("sorteio_realizado_em")
 
-  usuario       Usuario          @relation(fields: [usuarioId], references: [id])
+  usuario       Usuario            @relation(fields: [usuarioId], references: [id])
   participantes Participante[]
   resultados    ResultadoSorteio[]
 
   @@map("eventos")
 }
 
-model Participante {
-  id        Int      @id @default(autoincrement())
-  nome      String   @db.VarChar(150)
-  email     String?  @db.VarChar(191)
-  telefone  String?  @db.VarChar(30)
-  ativo     Boolean  @default(true)
-  eventoId  Int      @map("evento_id")
-  criadoEm  DateTime @default(now()) @map("criado_em")
-
-  evento Evento @relation(fields: [eventoId], references: [id])
-
-  resultadoComoSorteador   ResultadoSorteio?  @relation("Sorteador")
-  resultadosComoSorteado   ResultadoSorteio[] @relation("Sorteado")
-
-  @@map("participantes")
-}
-
 model Restricao {
-  id             Int      @id @default(autoincrement())
-  eventoId       Int      @map("evento_id")
-  participanteId Int      @map("participante_id")
-  destinatarioId Int      @map("destinatario_id")
+  id             Int           @id @default(autoincrement())
+  eventoId       Int           @map("evento_id")
+  participanteId Int           @map("participante_id")
+  destinatarioId Int           @map("destinatario_id")
   tipo           TipoRestricao
-  criadoEm       DateTime @default(now()) @map("criado_em")
+  criadoEm       DateTime      @default(now()) @map("criado_em")
 
   @@unique([eventoId, participanteId, destinatarioId, tipo])
   @@map("restricoes")
@@ -85,4 +68,35 @@ model ResultadoSorteio {
   @@unique([eventoId, sorteadoId])
   @@index([eventoId])
   @@map("resultados_sorteio")
+}
+
+model Participante {
+  id       Int      @id @default(autoincrement())
+  nome     String   @db.VarChar(150)
+  email    String?  @db.VarChar(191)
+  telefone String?  @db.VarChar(30)
+  ativo    Boolean  @default(true)
+  eventoId Int      @map("evento_id")
+  criadoEm DateTime @default(now()) @map("criado_em")
+
+  evento Evento @relation(fields: [eventoId], references: [id])
+
+  resultadoComoSorteador ResultadoSorteio?  @relation("Sorteador")
+  resultadosComoSorteado ResultadoSorteio[] @relation("Sorteado")
+
+  acesso ParticipanteAcesso?
+
+  @@map("participantes")
+}
+
+model ParticipanteAcesso {
+  id             Int      @id @default(autoincrement())
+  participanteId Int      @unique @map("participante_id")
+  senhaHash      String   @map("senha_hash") @db.VarChar(255)
+  criadoEm       DateTime @default(now()) @map("criado_em")
+  atualizadoEm   DateTime @updatedAt @map("atualizado_em")
+
+  participante Participante @relation(fields: [participanteId], references: [id], onDelete: Cascade)
+
+  @@map("participantes_acessos")
 }

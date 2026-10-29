@@ -10,7 +10,8 @@
  */
 export type * from './models/Usuario.js'
 export type * from './models/Evento.js'
-export type * from './models/Participante.js'
 export type * from './models/Restricao.js'
 export type * from './models/ResultadoSorteio.js'
+export type * from './models/Participante.js'
+export type * from './models/ParticipanteAcesso.js'
 export type * from './commonInputTypes.js'

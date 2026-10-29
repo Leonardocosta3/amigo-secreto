@@ -1,0 +1,10 @@
+# Dependências
+node_modules/
+
+# Arquivos compilados
+backend/dist/
+frontend/dist/
+
+# Variáveis de ambiente
+.env
+.env.*

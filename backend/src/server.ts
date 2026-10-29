@@ -22,12 +22,23 @@ import { autenticar } from "./middlewares/autenticacao.js";
 const app = express();
 
 // CONFIGURAÇÕES
+const origensPermitidas = [
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  "https://leonardocosta3.github.io",
+];
+
+if (process.env.FRONTEND_URL) {
+  origensPermitidas.push(
+    process.env.FRONTEND_URL.replace(/\/$/, "")
+  );
+}
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "http://127.0.0.1:5173"
-    ]
+    origin: origensPermitidas,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
@@ -36,7 +47,15 @@ app.use(express.json());
 // ROTA INICIAL
 app.get("/", (_req, res) => {
   return res.json({
-    mensagem: "API Amigo Secreto funcionando!"
+    mensagem: "API Amigo Secreto funcionando!",
+  });
+});
+
+// HEALTH CHECK PARA O RENDER
+app.get("/healthz", (_req, res) => {
+  return res.status(200).json({
+    status: "ok",
+    servico: "amigo-secreto-api",
   });
 });
 
@@ -47,14 +66,14 @@ app.get("/api/testar-banco", async (_req, res) => {
 
     return res.json({
       sucesso: true,
-      mensagem: "MySQL conectado com sucesso!"
+      mensagem: "Banco de dados conectado com sucesso!",
     });
   } catch (error) {
-    console.error(error);
+    console.error("Erro na conexão com o banco:", error);
 
     return res.status(500).json({
       sucesso: false,
-      mensagem: "Erro ao conectar ao MySQL."
+      mensagem: "Erro ao conectar ao banco de dados.",
     });
   }
 });
@@ -65,7 +84,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/resultado", resultadoRoutes);
 
 // ROTAS COM AUTENTICAÇÃO PRÓPRIA
-// Estes roteadores já utilizam router.use(autenticar).
 app.use("/api/eventos", eventosRoutes);
 app.use("/api/sorteio", sorteioRoutes);
 app.use("/api/participante-auth", participanteAuthRoutes);
@@ -85,16 +103,12 @@ app.use(
 
 // TRATAMENTO DE ROTAS NÃO ENCONTRADAS
 app.use((req, res) => {
-  console.warn(
-    "[404]",
-    req.method,
-    req.originalUrl
-  );
+  console.warn("[404]", req.method, req.originalUrl);
 
   return res.status(404).json({
     erro: "Rota não encontrada.",
     metodo: req.method,
-    caminho: req.originalUrl
+    caminho: req.originalUrl,
   });
 });
 

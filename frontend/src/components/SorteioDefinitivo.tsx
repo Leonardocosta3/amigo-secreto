@@ -348,9 +348,18 @@ export default function SorteioDefinitivo({
     }
   }
 
+  
   function obterUrl(token: string): string {
-    return `${window.location.origin}/resultado/${token}`;
+  const url = new URL(
+    import.meta.env.BASE_URL,
+    window.location.origin
+  );
+
+  url.searchParams.set("resultado", token);
+
+  return url.toString();
   }
+
 
   async function copiarLink(token: string) {
     try {

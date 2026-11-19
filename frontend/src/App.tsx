@@ -18,11 +18,18 @@ export default function App() {
   const [eventoId, setEventoId] = useState<number | null>(null);
   const [verificando, setVerificando] = useState(true);
 
-  const caminho = window.location.pathname;
+  
+  const parametros = new URLSearchParams(
+  window.location.search
+  );
 
-  const tokenResultado = caminho.match(
-    /^\/resultado\/([a-fA-F0-9]{64})\/?$/
-  )?.[1];
+  const tokenNaUrl = parametros.get("resultado");
+
+  const tokenResultado =
+  tokenNaUrl && /^[a-fA-F0-9]{64}$/.test(tokenNaUrl)
+    ? tokenNaUrl
+    : null;
+
 
   useEffect(() => {
     async function verificarSessao() {

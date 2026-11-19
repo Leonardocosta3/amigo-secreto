@@ -892,3 +892,52 @@ button:disabled {
     flex-direction: column;
   }
 }
+
+/* MENSAGEM DE CADASTRO CONCLUÍDO */
+
+.login-success {
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #f0fdf4;
+  color: #166534;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ALTERNAR ENTRE LOGIN E CADASTRO */
+
+.login-switch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 24px;
+  color: #64748b;
+  font-size: 14px;
+  text-align: center;
+}
+
+.login-switch button {
+  padding: 6px;
+  border: none;
+  background: transparent;
+  color: #2563eb;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.login-switch button:hover {
+  text-decoration: underline;
+}
+
+.login-switch button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.login-input:focus-within {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}

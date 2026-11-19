@@ -15,6 +15,7 @@ import restricoesRoutes from "./routes/restricoes.routes.js";
 import sorteioRoutes from "./routes/sorteio.routes.js";
 import resultadoRoutes from "./routes/resultado.routes.js";
 import participanteAuthRoutes from "./routes/participante-auth.routes.js";
+import { autorizarEventoDados } from "./middlewares/autorizarEventoDados.js";
 
 // Autenticação
 import { autenticar } from "./middlewares/autenticacao.js";
@@ -89,17 +90,21 @@ app.use("/api/sorteio", sorteioRoutes);
 app.use("/api/participante-auth", participanteAuthRoutes);
 
 // ROTAS PROTEGIDAS
+
 app.use(
   "/api/participantes",
   autenticar,
+  autorizarEventoDados("participantes"),
   participantesRoutes
 );
 
 app.use(
   "/api/restricoes",
   autenticar,
+  autorizarEventoDados("restricoes"),
   restricoesRoutes
 );
+
 
 // TRATAMENTO DE ROTAS NÃO ENCONTRADAS
 app.use((req, res) => {
